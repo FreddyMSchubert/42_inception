@@ -1,0 +1,220 @@
+html
+{
+	margin: 0;
+	padding: 0;
+	background-image: url(./assets/background.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	backdrop-filter: blur(100px);
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	color: white;
+	overflow: hidden;
+}
+
+.app
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	align-self: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #29292954;
+	backdrop-filter: blur(10px);
+	width: 70vmin;
+	border-radius: 10%;
+}
+
+.btn
+{
+	border-radius: 50%;
+	width: 35vmin;
+	height: 35vmin;
+	background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+	animation: rotate 10s linear infinite;
+	box-shadow: 0 0 30px 5px #6a11cb;
+}
+
+@keyframes rotate
+{
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+@keyframes click-animation
+{
+	0%   { transform: scale(1); }
+	50%  { transform: scale(0.8); }
+	100% { transform: scale(1); }
+}
+
+.animate
+{
+	animation: click-animation 0.1s;
+}
+
+/* PARTICLES */
+
+.falling-particles
+{
+	z-index: -1;
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	pointer-events: none;
+	top: 0;
+	left: 0;
+}
+
+.falling-particle
+{
+	position: absolute;
+	opacity: 1;
+	pointer-events: none;
+	animation: fall0 1s linear forwards;
+}
+
+/* AUTOMATIONS */
+
+.automation-list
+{
+	position: absolute;
+	left: 5%;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: #29292954;
+	padding: 20px;
+	border-radius: 10px;
+	backdrop-filter: blur(10px);
+	width: 20vmin;
+	color: white;
+	overflow-y: scroll;
+}
+
+.automation-item
+{
+	display: flex;
+	justify-content: space-between;
+	padding: 10px;
+	border-bottom: 1px solid white;
+	cursor: pointer;
+}
+
+/* UPGRADES */
+
+.upgrades
+{
+	position: absolute;
+	right: 5%;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: #29292954;
+	padding: 20px;
+	border-radius: 10px;
+	backdrop-filter: blur(10px);
+	width: 20vmin;
+	color: white;
+	overflow-y: scroll;
+}
+.upgrade
+{
+	display: flex;
+	justify-content: space-between;
+	padding: 10px;
+	border-bottom: 1px solid white;
+	cursor: pointer;
+}
+
+/* FALL ANIMATIONS */
+
+@keyframes fall0
+{
+	0%
+	{
+		transform: scale(1) rotate(0deg);
+		opacity: 0;
+	}
+	5%
+	{
+		opacity: 1;
+	}
+	50%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		transform: translateY(100vh) scale(0.5) rotate(50deg);
+		opacity: 0;
+	}
+}
+
+@keyframes fall1
+{
+	0%
+	{
+		transform: scale(1) rotate(0deg);
+		opacity: 0;
+	}
+	5%
+	{
+		opacity: 1;
+	}
+	50%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		transform: translateY(100vh) scale(0.5) rotate(-50deg);
+		opacity: 0;
+	}
+}
+
+@keyframes fall2
+{
+	0%
+	{
+		transform: scale(1) rotate(0deg);
+		opacity: 0;
+	}
+	5%
+	{
+		opacity: 1;
+	}
+	50%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		transform: translateY(100vh) scale(0.5) rotate(-100deg);
+		opacity: 0;
+	}
+}
+
+@keyframes fall3
+{
+	0%
+	{
+		transform: scale(1) rotate(0deg);
+		opacity: 0;
+	}
+	5%
+	{
+		opacity: 1;
+	}
+	50%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		transform: translateY(100vh) scale(0.5) rotate(100deg);
+		opacity: 0;
+	}
+}
