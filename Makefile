@@ -1,1 +1,6 @@
-# this should setup entire project, build docker images
+COMPOSE := ./srcs/docker-compose.yml
+
+run:
+	docker compose -f $(COMPOSE) up -d
+stop:
+	docker compose -f $(COMPOSE)  down

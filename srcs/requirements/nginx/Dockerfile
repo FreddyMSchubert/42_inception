@@ -9,7 +9,5 @@ COPY ./assets/www/ /var/www/html/
 COPY ./assets/www.conf /etc/nginx/conf.d/default.conf
 COPY ./assets/nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 4242
-
 CMD ["nginx", "-g", "daemon off;"]
 
