@@ -1,17 +1,7 @@
 version: '3.8'
 
-networks:
-  inception_network:
-    # yeehaw
-
-
 services:
   nginx:
-    restart: always
-    networks:
-      - inception_network
-    build:
-      context: "./requirements/nginx"
-      dockerfile: Dockerfile
+    build: "./requirements/nginx"
     ports:
       - "4242:4242"
