@@ -8,8 +8,31 @@ services:
       - "80:80"
     volumes:
       - ./web:/var/www/html
+    depends_on:
+      - wordpress
+
   wordpress:
     build: "./requirements/wordpress"
     container_name: wp-php
     volumes:
       - ./web:/var/www/html
+    environment:
+      - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
+      - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
+      - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}
+      - WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER}
+      - WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD}
+      - WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL}
+      - WORDPRESS_TEST_USER=${WORDPRESS_TEST_USER}
+      - WORDPRESS_TEST_USER_PASSWORD=${WORDPRESS_TEST_USER_PASSWORD}
+      - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
+    depends_on:
+      - mariadb
+
+  mariadb:
+    build: "./requirements/mariadb"
+    container_name: mariadb
+    environment:
+      - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
+      - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
+      - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}

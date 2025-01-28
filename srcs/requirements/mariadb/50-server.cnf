@@ -1,0 +1,27 @@
+# The following is the default configuration file for Mariadb with modifications
+# at /etc/mysql/mariadb.conf.d/50-server.cnf
+# comments have been removed for brevity
+
+[server]
+
+init_file = /etc/mysql/init.sql # call custom init script on startup
+
+[mysqld]
+
+user                    = root # usually runs on mysql user for security purposes
+pid-file                = /run/mysqld/mysqld.pid
+basedir                 = /usr
+datadir                 = /var/lib/mysql # sets specific data storage folder
+tmpdir                  = /tmp # sets temp data folder
+
+bind-address            = 0.0.0.0 # listen everywhere
+expire_logs_days        = 10
+
+character-set-server  = utf8mb4
+collation-server      = utf8mb4_general_ci
+
+[embedded]
+
+[mariadb]
+
+[mariadb-10.11]
