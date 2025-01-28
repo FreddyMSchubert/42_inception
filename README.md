@@ -94,6 +94,10 @@ Displays real-time metrics for running containers.
 
 Runs a command inside a running container, e.g. `docker exec -it nginx bash` opens up a bash shell in nginx.
 
+```docker cp [CONTAINER:]PATH [CONTAINER:]TARGET_PATH```
+
+Copies files between a container and the local filesystem. Don't specify container before a path to reference local file system. Copying from container to container directly is not supported.
+
 ➡️ ```docker commit [OPTIONS] CONTAINER IMAGE_NAME:TAG```
 
 Creates a new image from a container's changes, e.g. `docker commit nginx username/nginx:v1.1`
