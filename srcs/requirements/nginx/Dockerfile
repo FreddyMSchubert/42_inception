@@ -1,6 +1,5 @@
-FROM alpine:latest
+FROM debian:latest
 
-RUN apk update
-RUN apk add --update nginx
+RUN apt update && apt upgrade && apt install -y nginx
 
-CMD ["nginx", "-g", "daemon off;"] // runs in foreground for now
+CMD ["nginx", "-g", "daemon off;"]
