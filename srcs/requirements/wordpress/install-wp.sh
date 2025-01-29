@@ -24,4 +24,4 @@ chmod +x wp-cli.phar
 			--user_pass="${WORDPRESS_TEST_USER_PASSWORD}" \
 			--allow-root
 
-php-fpm8.2 -F
+php-fpm7.4 -F

@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:bullseye
 
 # mariadb is the sql database implementation, used by wordpress for storage
 # we need to create /run/mysqld directory for mariadb to run there

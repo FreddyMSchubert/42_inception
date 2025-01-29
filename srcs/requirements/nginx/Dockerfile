@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:bullseye
 
 # nginx is the webserver, handling incoming requests and using cgi
 # it will forward php requests to wordpress / php-fpm as specified in the copied config
