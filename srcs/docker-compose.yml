@@ -10,6 +10,8 @@ services:
       - ./web:/var/www/html
     depends_on:
       - wordpress
+    networks:
+      - inception
 
   wordpress:
     build: "./requirements/wordpress"
@@ -28,6 +30,8 @@ services:
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
     depends_on:
       - mariadb
+    networks:
+      - inception
 
   mariadb:
     build: "./requirements/mariadb"
@@ -36,3 +40,8 @@ services:
       - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
       - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}
+    networks:
+      - inception
+
+networks:
+  inception:
