@@ -5,7 +5,7 @@ FROM debian:bullseye
 # php-mysqli is a php extension that allows php to interact with mysql databases & curl is used to get WordPress install files
 
 RUN apt update && apt upgrade -y && \
-	apt install -y php7.4-fpm php-mysqli curl && \
+	apt install -y php7.4-fpm php7.4-mysql curl && \
 	mkdir -p /run/php
 
 COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf

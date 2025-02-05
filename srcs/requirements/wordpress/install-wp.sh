@@ -1,11 +1,18 @@
 #!/bin/bash
 
+set -e
+
 cd /var/www/html
 # download wordpress command line interface to download & manage wordpress
-curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-chmod +x wp-cli.phar
-./wp-cli.phar core download \
-			--allow-root
+if [ ! -f wp-cli.phar ]; then
+	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+	chmod +x wp-cli.phar
+fi
+
+if [ ! -f wp-load.php ]; then
+	./wp-cli.phar core download --allow-root
+fi
+
 ./wp-cli.phar config create \
 			--dbname=${MARIA_DB_DATABASE_NAME} \
 			--dbuser=${MARIA_DB_ROOT_USER} \
