@@ -1,3 +1,4 @@
 .DS_Store
 /srcs/web/
+/srcs/db/
 /srcs/.env

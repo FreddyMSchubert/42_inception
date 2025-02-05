@@ -5,13 +5,17 @@ services:
     build: "./requirements/nginx"
     container_name: nginx
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
       - ./web:/var/www/html
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
       - wordpress
+      - mariadb
     networks:
       - inception
+    restart: always
 
   wordpress:
     build: "./requirements/wordpress"
@@ -32,16 +36,20 @@ services:
       - mariadb
     networks:
       - inception
+    restart: always
 
   mariadb:
     build: "./requirements/mariadb"
     container_name: mariadb
+    volumes:
+      - ./db:/var/lib/mysql
     environment:
       - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
       - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}
     networks:
       - inception
+    restart: always
 
 networks:
   inception:

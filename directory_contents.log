@@ -13,6 +13,9 @@ WORDPRESS_ADMIN_EMAIL=bananaman@banana.de
 WORDPRESS_TEST_USER=${USER}
 WORDPRESS_TEST_USER_PASSWORD=${USER}
 WORDPRESS_TEST_USER_EMAIL=${USER}@bananasareepic.de
+
+# Domain configuration for NGINX TLS
+DOMAIN_NAME=fschuber.42.fr
 -e 
 
 ----- ./srcs/docker-compose.yml -----
@@ -23,13 +26,17 @@ services:
     build: "./requirements/nginx"
     container_name: nginx
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
       - ./web:/var/www/html
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
       - wordpress
+      - mariadb
     networks:
       - inception
+    restart: always
 
   wordpress:
     build: "./requirements/wordpress"
@@ -50,19 +57,43 @@ services:
       - mariadb
     networks:
       - inception
+    restart: always
 
   mariadb:
     build: "./requirements/mariadb"
     container_name: mariadb
+    volumes:
+      - ./db:/var/lib/mysql
     environment:
       - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
       - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}
     networks:
       - inception
+    restart: always
 
 networks:
   inception:
+-e 
+
+----- ./srcs/example.env -----
+# MariaDB Configuration
+MARIA_DB_ROOT_USER=
+MARIA_DB_ROOT_PASSWORD=
+MARIA_DB_DATABASE_NAME=
+
+# WordPress Admin Configuration
+WORDPRESS_ADMIN_USER=
+WORDPRESS_ADMIN_PASSWORD=
+WORDPRESS_ADMIN_EMAIL=
+
+# WordPress Test User Configuration
+WORDPRESS_TEST_USER=
+WORDPRESS_TEST_USER_PASSWORD=
+WORDPRESS_TEST_USER_EMAIL=
+
+# Domain configuration for NGINX TLS
+DOMAIN_NAME=
 -e 
 
 ----- ./srcs/requirements/mariadb/50-server.cnf -----
@@ -102,7 +133,7 @@ FROM debian:bullseye
 # we need to create /run/mysqld directory for mariadb to run there
 # gettext-base is used by start_mariadb.sh for env var substitution
 
-RUN apt update && apt upgrade && \
+RUN apt update && apt upgrade -y && \
 	apt install -y mariadb-server \
 	gettext-base
 
@@ -143,16 +174,22 @@ exec mysqld_safe
 # The following is the default configuration file for Nginx with modifications
 # at /etc/nginx/sites-available/default
 # comments have been removed for brevity
+# ssl behind listen communicates that nginx should use the SSL protocol
 
 server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
+	listen 443 ssl;
+	listen [::]:443 ssl;
+
+	server_name ${DOMAIN_NAME};
+
+	# SSL Configuration
+	ssl_certificate /etc/nginx/ssl/nginx.crt;
+	ssl_certificate_key /etc/nginx/ssl/nginx.key;
+	ssl_protocols TLSv1.2 TLSv1.3;
+	ssl_ciphers HIGH:!aNULL:!MD5;
 
 	root /var/www/html;
-
 	index index.php index.html index.htm index.nginx-debian.html; # index.php has priority
-
-	server_name _;
 
 	location / {
 		try_files $uri $uri/ =404;
@@ -171,12 +208,33 @@ FROM debian:bullseye
 
 # nginx is the webserver, handling incoming requests and using cgi
 # it will forward php requests to wordpress / php-fpm as specified in the copied config
+# openssl is used to generate the ssl certificate
 
-RUN apt update && apt upgrade && apt install -y nginx
+RUN apt update && apt upgrade -y && apt install -y nginx openssl gettext-base
+
+# Create directory for SSL certificates
+RUN mkdir -p /etc/nginx/ssl && \
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-subj "/C=GB/ST=England/L=London/O=Inception/OU=IT Department/CN=${DOMAIN_NAME}" \
+	-keyout /etc/nginx/ssl/nginx.key \
+	-out /etc/nginx/ssl/nginx.crt
 
 COPY default /etc/nginx/sites-available/default
+COPY envsubstitution.sh /envsubstitution.sh
+RUN chmod +x /envsubstitution.sh
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/envsubstitution.sh"]
+-e 
+
+----- ./srcs/requirements/nginx/envsubstitution.sh -----
+#!/bin/bash
+
+set -e # Immediately exit if any command has a non-zero exit status.
+
+envsubst < /etc/nginx/sites-available/default > /etc/nginx/sites-available/default1
+mv /etc/nginx/sites-available/default1 /etc/nginx/sites-available/default
+
+exec nginx -g 'daemon off;'
 -e 
 
 ----- ./srcs/requirements/wordpress/Dockerfile -----
@@ -186,7 +244,7 @@ FROM debian:bullseye
 # it will listen on the right port as specified in the copied over config file
 # php-mysqli is a php extension that allows php to interact with mysql databases & curl is used to get WordPress install files
 
-RUN apt update && apt upgrade && \
+RUN apt update && apt upgrade -y && \
 	apt install -y php7.4-fpm php-mysqli curl && \
 	mkdir -p /run/php
 

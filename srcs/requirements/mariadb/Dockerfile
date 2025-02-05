@@ -4,7 +4,7 @@ FROM debian:bullseye
 # we need to create /run/mysqld directory for mariadb to run there
 # gettext-base is used by start_mariadb.sh for env var substitution
 
-RUN apt update && apt upgrade && \
+RUN apt update && apt upgrade -y && \
 	apt install -y mariadb-server \
 	gettext-base
 

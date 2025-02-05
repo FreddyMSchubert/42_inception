@@ -4,7 +4,7 @@ FROM debian:bullseye
 # it will listen on the right port as specified in the copied over config file
 # php-mysqli is a php extension that allows php to interact with mysql databases & curl is used to get WordPress install files
 
-RUN apt update && apt upgrade && \
+RUN apt update && apt upgrade -y && \
 	apt install -y php7.4-fpm php-mysqli curl && \
 	mkdir -p /run/php
 

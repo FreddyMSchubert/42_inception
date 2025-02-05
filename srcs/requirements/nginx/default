@@ -1,16 +1,22 @@
 # The following is the default configuration file for Nginx with modifications
 # at /etc/nginx/sites-available/default
 # comments have been removed for brevity
+# ssl behind listen communicates that nginx should use the SSL protocol
 
 server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
+	listen 443 ssl;
+	listen [::]:443 ssl;
+
+	server_name ${DOMAIN_NAME};
+
+	# SSL Configuration
+	ssl_certificate /etc/nginx/ssl/nginx.crt;
+	ssl_certificate_key /etc/nginx/ssl/nginx.key;
+	ssl_protocols TLSv1.2 TLSv1.3;
+	ssl_ciphers HIGH:!aNULL:!MD5;
 
 	root /var/www/html;
-
 	index index.php index.html index.htm index.nginx-debian.html; # index.php has priority
-
-	server_name _;
 
 	location / {
 		try_files $uri $uri/ =404;
