@@ -1,21 +1,24 @@
 version: '3.8'
 
 services:
-  nginx:
-    build: "./requirements/nginx"
-    container_name: nginx
-    ports:
-      - "443:443"
+
+  mariadb:
+    build: "./requirements/mariadb"
+    container_name: mariadb
     volumes:
-      - ./web:/var/www/html
+      - ./db:/var/lib/mysql
     environment:
-      - DOMAIN_NAME=${DOMAIN_NAME}
-    depends_on:
-      - wordpress
-      - mariadb
+      - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
+      - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
+      - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}
     networks:
       - inception
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   wordpress:
     build: "./requirements/wordpress"
@@ -32,21 +35,28 @@ services:
       - WORDPRESS_TEST_USER=${WORDPRESS_TEST_USER}
       - WORDPRESS_TEST_USER_PASSWORD=${WORDPRESS_TEST_USER_PASSWORD}
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
+      - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     networks:
       - inception
     restart: always
 
-  mariadb:
-    build: "./requirements/mariadb"
-    container_name: mariadb
+  nginx:
+    build: "./requirements/nginx"
+    container_name: nginx
+    ports:
+      - "443:443"
     volumes:
-      - ./db:/var/lib/mysql
+      - ./web:/var/www/html
     environment:
-      - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
-      - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
-      - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}
+      - DOMAIN_NAME=${DOMAIN_NAME}
+    depends_on:
+      wordpress:
+        condition: service_started
+      mariadb:
+        condition: service_healthy
     networks:
       - inception
     restart: always

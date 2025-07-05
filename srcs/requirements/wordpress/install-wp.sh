@@ -2,6 +2,8 @@
 
 set -e
 
+chown -R www-data:www-data /var/www/html
+
 cd /var/www/html
 # download wordpress command line interface to download & manage wordpress
 if [ ! -f wp-cli.phar ]; then
@@ -20,7 +22,7 @@ fi
 			--dbhost=mariadb \
 			--allow-root
 ./wp-cli.phar core install \
-			--url=localhost \
+			--url=https://${DOMAIN_NAME} \
 			--title=inception \
 			--admin_user=${WORDPRESS_ADMIN_USER} \
 			--admin_password=${WORDPRESS_ADMIN_PASSWORD} \

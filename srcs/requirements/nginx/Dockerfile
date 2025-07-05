@@ -17,4 +17,4 @@ COPY default /etc/nginx/sites-available/default
 COPY envsubstitution.sh /envsubstitution.sh
 RUN chmod +x /envsubstitution.sh
 
-CMD ["/envsubstitution.sh"]
+ENTRYPOINT ["bash", "/envsubstitution.sh"]

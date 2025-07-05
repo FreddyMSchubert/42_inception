@@ -12,4 +12,4 @@ COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY install-wp.sh /install-wp.sh
 RUN chmod +x /install-wp.sh
 
-CMD ["/install-wp.sh"]
+ENTRYPOINT ["bash", "/install-wp.sh"]

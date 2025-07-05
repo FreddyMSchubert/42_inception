@@ -16,4 +16,4 @@ RUN chmod +x /start_mariadb.sh
 
 RUN mkdir /run/mysqld
 
-CMD ["/start_mariadb.sh"]
+ENTRYPOINT ["bash", "/start_mariadb.sh"]
