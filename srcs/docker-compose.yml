@@ -1,7 +1,6 @@
-version: '3.8'
+version: "3.8"
 
 services:
-
   mariadb:
     build: "./requirements/mariadb"
     container_name: mariadb
@@ -48,6 +47,7 @@ services:
     container_name: nginx
     ports:
       - "443:443"
+      - "80:80"
     volumes:
       - ./web:/var/www/html
     environment:

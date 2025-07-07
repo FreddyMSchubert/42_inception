@@ -3,6 +3,14 @@
 # comments have been removed for brevity
 # ssl behind listen communicates that nginx should use the SSL protocol
 
+# redirect all HTTP traffic to HTTPS
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server; # IPv6
+	server_name _; # Match any host header
+	return 301 https://$host$request_uri;
+}
+
 server {
 	listen 443 ssl;
 	listen [::]:443 ssl;
@@ -16,7 +24,7 @@ server {
 	ssl_ciphers HIGH:!aNULL:!MD5;
 
 	root /var/www/html;
-	index index.php index.html index.htm index.nginx-debian.html; # index.php has priority
+	index index.php index.html index.htm; # index.php has priority
 
 	location / {
 		try_files $uri $uri/ =404;
@@ -26,5 +34,8 @@ server {
 		include snippets/fastcgi-php.conf;
 
 		fastcgi_pass wp-php:9000; # Send php requests to the php container
+
+		fastcgi_param HTTPS on;
+		fastcgi_param HTTP_X_FORWARDED_PROTO $scheme;
 	}
 }
