@@ -23,7 +23,7 @@ services:
     build: "./requirements/wordpress"
     container_name: wp-php
     volumes:
-      - .${HOST_DATA_DIR}/web:/var/www/html
+      - ${HOST_DATA_DIR}/web:/var/www/html
     environment:
       - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
@@ -48,7 +48,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - .${HOST_DATA_DIR}/web:/var/www/html
+      - ${HOST_DATA_DIR}/web:/var/www/html
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
