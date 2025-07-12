@@ -10,4 +10,6 @@ done
 envsubst '$DOMAIN_NAME' < /etc/nginx/sites-available/default > /etc/nginx/sites-available/default1
 mv /etc/nginx/sites-available/default1 /etc/nginx/sites-available/default
 
+chown -R www-data:www-data /var/www/html
+
 exec nginx -g 'daemon off;'
