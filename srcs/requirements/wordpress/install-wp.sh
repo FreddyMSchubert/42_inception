@@ -33,5 +33,7 @@ else
 	echo "[wp-setup] Detected existing installation – skipping setup."
 fi
 
+chown -R www-data:www-data /var/www/html
+
 # Finally, always start PHP-FPM
 php-fpm7.4 -F

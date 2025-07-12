@@ -22,4 +22,4 @@ log:
 	cat directory_contents.log
 
 
-PHONY: start run clean stop re log
+.PHONY: start run clean stop re log
