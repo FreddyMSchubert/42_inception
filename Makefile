@@ -1,14 +1,14 @@
 start: run
 run:
-	mkdir -p ./srcs/web
-	mkdir -p ./srcs/db
+	mkdir -p /home/fschuber/data/web
+	mkdir -p /home/fschuber/data/db
 	cd ./srcs && docker compose -f docker-compose.yml up --build
 stop:
 	cd ./srcs && docker compose -f docker-compose.yml down
 
 clean:
-	rm -rf ./srcs/web
-	rm -rf ./srcs/db
+	rm -rf /home/fschuber/data/web
+	rm -rf /home/fschuber/data/db
 re: stop clean run
 
 log:
