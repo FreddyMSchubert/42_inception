@@ -1,5 +1,5 @@
 start: run
-run:
+run: verify_env
 	mkdir -p /home/fschuber/data/web
 	mkdir -p /home/fschuber/data/db
 	cd ./srcs && docker compose -f docker-compose.yml up --build
@@ -10,6 +10,10 @@ clean:
 	rm -rf /home/fschuber/data/web
 	rm -rf /home/fschuber/data/db
 re: stop clean run
+
+verify_env:
+	chmod +x ./srcs/verify_env.sh
+	cd ./srcs && ./verify_env.sh
 
 log:
 	rm -f directory_contents.log; \
@@ -22,4 +26,4 @@ log:
 	cat directory_contents.log
 
 
-.PHONY: start run clean stop re log
+.PHONY: start run clean stop re log verify_env
