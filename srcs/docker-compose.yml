@@ -28,7 +28,7 @@ services:
       - inception
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p\"${MARIA_DB_ROOT_PASSWORD}\""]
       interval: 5s
       timeout: 3s
       retries: 10

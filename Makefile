@@ -1,13 +1,13 @@
 start: run
 run: verify_env
-	mkdir -p /home/fschuber/data/web
+	mkdir -p /home/fschuber/data/wp
 	mkdir -p /home/fschuber/data/db
 	cd ./srcs && docker compose -f docker-compose.yml up --build
 stop:
 	cd ./srcs && docker compose -f docker-compose.yml down
 
 clean:
-	rm -rf /home/fschuber/data/web
+	rm -rf /home/fschuber/data/wp
 	rm -rf /home/fschuber/data/db
 re: stop clean run
 
