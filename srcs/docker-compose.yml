@@ -5,13 +5,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: "/home/${USER}/data"
+      device: "/home/${USER}/data/db"
       o: bind
   wp:
     driver: local
     driver_opts:
       type: none
-      device: "/home/${USER}/data"
+      device: "/home/${USER}/data/wp"
       o: bind
 
 services:
