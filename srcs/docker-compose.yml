@@ -1,11 +1,25 @@
 version: "3.8"
 
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: "/home/${USER}/data"
+      o: bind
+  wp:
+    driver: local
+    driver_opts:
+      type: none
+      device: "/home/${USER}/data"
+      o: bind
+
 services:
   mariadb:
     build: "./requirements/mariadb"
     container_name: mariadb
     volumes:
-      - ${HOST_DATA_DIR}/db:/var/lib/mysql
+      - db:/var/lib/mysql
     environment:
       - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
@@ -23,7 +37,7 @@ services:
     build: "./requirements/wordpress"
     container_name: wp-php
     volumes:
-      - ${HOST_DATA_DIR}/web:/var/www/html
+      - wp:/var/www/html
     environment:
       - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
@@ -48,7 +62,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ${HOST_DATA_DIR}/web:/var/www/html
+      - wp:/var/www/html
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
