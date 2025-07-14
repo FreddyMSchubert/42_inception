@@ -10,6 +10,7 @@ clean:
 	rm -rf /home/fschuber/data/wp
 	rm -rf /home/fschuber/data/db
 re: stop clean run
+	./srcs/reset.sh
 
 verify_env:
 	chmod +x ./srcs/verify_env.sh
